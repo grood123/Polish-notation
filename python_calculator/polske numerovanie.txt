@@ -1,0 +1,147 @@
+#Maks (GROOD) Shkunda
+#09.03.2022 - START
+#------------TEST-----
+# 5*2+10
+# (6+10-4)/(1+1*2)+1
+# 
+#---------------------
+#---------Imoport---------
+import os
+#--------Function-------
+
+def prior():
+    global prior_in_list
+    global prior_current
+    if OpArray[-1] == "*":
+        prior_in_list = 2
+    elif OpArray[-1] == "/":
+        prior_in_list = 2
+    elif OpArray[-1] == "+":
+        prior_in_list = 1
+    elif OpArray[-1] == "-":
+        prior_in_list = 1
+    else:
+        prior_in_list = 0
+
+    if tokenized[i] == "*":
+        prior_current = 2
+    elif tokenized[i] == "/":
+        prior_current = 2
+    elif tokenized[i] == "+":
+        prior_current = 1
+    elif tokenized[i] == "-":
+        prior_current = 1
+    else:
+        prior_current = 0
+
+
+#---------END------
+#-----------Variable-----
+#---------Tokenizer----
+number = ['1','2','3','4','5','6','7','8','9','0']
+Example = input("What to count:")
+untokenize = []
+tokenized = []
+in_num_1 = False
+in_num = False
+lol = 0
+count_times = 0
+#-------Polske_numerovanie---
+symbols = ["-","+","*","/","(",")"]
+numbers = []
+outPutArray = []
+OpArray = []
+root_in_num = False
+prior_in_list = 0
+prior_current = 0
+
+
+
+for i in range(len(Example)):
+    untokenize.append(Example[i])
+untokenize.append(".")
+
+roll = 0
+for roll in range(len(untokenize)):
+    in_num = untokenize[roll] in number
+    in_sym = untokenize[roll] in symbols
+    dot_l = untokenize[roll] == "."
+    char = untokenize[roll]
+    if in_num == True:
+        if len(untokenize)>= i+1:
+            try:
+                while True:
+                    in_num_1 = untokenize[roll+1] in number
+                    count_times +=1
+                    if in_num_1 == True:
+                        if count_times == 1:
+                            char = str(untokenize[roll])+str(untokenize[roll+1])
+                            roll +=1
+                        else:
+                            char = char + str(untokenize[roll+1])
+                            roll += 1
+                    else:
+                        count_times = 0
+                        if char in tokenized[-1]:
+                            pass
+                        else:
+                            tokenized.append(char)
+                        break
+
+            except:
+                tokenized.append(char)
+        else:
+            tokenized.append(char)
+    elif in_sym == True:
+        tokenized.append(char)
+    elif dot_l == True:
+        tokenized.append(char)
+    else:
+        pass
+tokenized.pop()
+
+
+print("---Tokenized---")
+print(tokenized)
+print("------------")
+
+for i in range(len(tokenized)):
+    root_in_symbols = tokenized[i] in symbols
+    if root_in_symbols == True:
+        brk_in_symbols = "(" in OpArray
+        cur_is_cl_brak = tokenized[i] == ")"
+        if len(OpArray) == 0:
+            OpArray.append(tokenized[i])
+        elif tokenized[i] == "(":
+            OpArray.append(tokenized[i])
+        elif brk_in_symbols == True and cur_is_cl_brak == True:
+            OpArray.append(tokenized[i])
+            ind_op = OpArray.index("(")
+            ind_cls = OpArray.index(")")
+            OpArray.remove("(")
+            OpArray.remove(")")
+            for i in range(ind_cls-2,ind_op-1,-1):
+                outPutArray.append(OpArray[i])
+                OpArray.remove(OpArray[i])
+        elif tokenized[i] == ")":
+            OpArray.append(tokenized[i])
+        else:
+            prior()
+            if prior_in_list >= prior_current:
+                outPutArray.append(OpArray[-1])
+                OpArray.pop()
+                OpArray.append(tokenized[i])
+            else:
+                OpArray.append(tokenized[i])
+    else:
+        outPutArray.append(tokenized[i])
+
+for i in range(len(OpArray)):
+    outPutArray.append(OpArray[-1])
+    OpArray.pop()
+
+
+
+print("----Numerovanie----")
+print(outPutArray)
+print("-----------------")

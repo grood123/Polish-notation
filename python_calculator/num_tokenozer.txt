@@ -1,0 +1,56 @@
+numbers = ['1','2','3','4','5','6','7','8','9','0']
+Example = input("What to tokenize:")
+untokenize = []
+tokenized = []
+in_num_1 = False
+in_num = False
+lol = 0
+count_times = 0
+for i in range(len(Example)):
+    untokenize.append(Example[i])
+
+
+roll = 0
+for roll in range(len(untokenize)):
+    print(roll)
+    in_num = untokenize[roll] in numbers
+    char = untokenize[roll]
+    if in_num == True:
+        if len(untokenize)>= i+1:
+            try:
+                while True:
+                    in_num_1 = untokenize[roll+1] in numbers
+                    count_times +=1
+                    if in_num_1 == True:
+                        if count_times == 1:
+                            char = str(untokenize[roll])+str(untokenize[roll+1])
+                            roll +=1
+                        else:
+                            char = char + str(untokenize[roll+1])
+                            roll += 1
+                    else:
+                        count_times = 0
+                        if char in tokenized[-1]:
+                            pass
+                        else:
+                            tokenized.append(char)
+                        break
+
+            except:
+                tokenized.append(char)
+        else:
+            tokenized.append(char)
+    else:
+        tokenized.append(char)
+    print(untokenize)
+    print(tokenized)
+
+
+tokenized.pop()
+print("-------------")
+print(tokenized)
+
+
+
+
+print(tokenized)
